@@ -20,7 +20,7 @@ func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) {
 
 	// здесь нужно добавить необходимые проверки
 	// проверка на статус 200 ок
-	require.Equal(t, responseRecorder.Code, http.StatusOK)
+	require.Equal(t, http.StatusOK, responseRecorder.Code)
 
 	//конвертируем полученную строку в слайс
 	body := responseRecorder.Body.String()
