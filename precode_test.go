@@ -22,24 +22,26 @@ func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) {
 	// проверка на статус 200 ок
 	require.Equal(t, http.StatusOK, responseRecorder.Code)
 
-	//конвертируем полученную строку в слайс
+	//Проверяем кол-во выдаваемых городов
 	body := responseRecorder.Body.String()
 	list := strings.Split(body, ",")
 
-	// проверка на общее кол-во
 	assert.Len(t, list, totalCount)
 
+}
+
+func ErrorStatusGerNotcity(t *testing.T) {
 	erorrReq := httptest.NewRequest("GET", "/cafe?count=10&city=notcity", nil) //запрос к сервису с несуществующим городом
 
-	responseRecorderr := httptest.NewRecorder()
+	responseRecorder := httptest.NewRecorder()
 	erorrHandlerr := http.HandlerFunc(mainHandle)
-	erorrHandlerr.ServeHTTP(responseRecorderr, erorrReq)
+	erorrHandlerr.ServeHTTP(responseRecorder, erorrReq)
 
 	// проверяем статус 400
-	require.Equal(t, http.StatusBadRequest, responseRecorderr.Code)
+	require.Equal(t, http.StatusBadRequest, responseRecorder.Code)
 
 	// проверяем запись при вводе несуществующего города
 	expectedErrorMessage := "wrong city value"
-	assert.Equal(t, expectedErrorMessage, responseRecorderr.Body.String())
+	assert.Equal(t, expectedErrorMessage, responseRecorder.Body.String())
 
 }
